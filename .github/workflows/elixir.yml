@@ -59,6 +59,6 @@ jobs:
         mix deps.get
         mix compile
     - name: Run Tests
-      run: mix coveralls.github
+      run: mix coveralls.github -u
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
