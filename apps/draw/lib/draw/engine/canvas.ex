@@ -3,6 +3,7 @@ defmodule Draw.Engine.Canvas do
   Canvas structure to keep all the canvas data
   """
 
+  alias Draw.Engine
   alias Draw.Engine.Canvas
 
   @type t :: %Canvas{}
@@ -29,5 +30,13 @@ defmodule Draw.Engine.Canvas do
       end
 
     %Canvas{width: width, height: height, fields: fields}
+  end
+
+  @doc """
+  Returns a character that is at a given position
+  """
+  @spec at(Canvas.t(), Engine.point()) :: String.t() | nil
+  def at(canvas, point) do
+    Map.get(canvas.fields, point)
   end
 end
