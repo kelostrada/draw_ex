@@ -8,6 +8,7 @@ defmodule Draw.Engine do
   require Logger
 
   @type point :: {width :: pos_integer(), height :: pos_integer()}
+  @type ascii :: 0..255
 
   @doc """
   Prepare a new canvas with given size.
