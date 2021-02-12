@@ -11,6 +11,12 @@ defmodule Draw.Engine.Canvas do
   @enforce_keys [:width, :height, :fields]
   defstruct [:width, :height, :fields]
 
+  defimpl String.Chars do
+    def to_string(%Canvas{} = canvas) do
+      Canvas.Formatter.to_string(canvas)
+    end
+  end
+
   @doc """
   Creates new Canvas structure. Prefills the canvas with a given character
 
