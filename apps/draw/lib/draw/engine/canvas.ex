@@ -33,10 +33,25 @@ defmodule Draw.Engine.Canvas do
   end
 
   @doc """
-  Returns a character that is at a given position
+  Returns a character that is at a given position. If the point is out of bounds
+  it will return nil.
   """
   @spec at(Canvas.t(), Engine.point()) :: Engine.ascii() | nil
-  def at(canvas, point) do
+  def at(%Canvas{} = canvas, {_, _} = point) do
     Map.get(canvas.fields, point)
+  end
+
+  @doc """
+  Updates a character at a given position on the field. If the point is out of
+  bounds it will return an error tuple `{:error, :out_of_bounds}`.
+  """
+  @spec put(Canvas.t(), Engine.point(), Engine.ascii()) ::
+          {:ok, Canvas.t()} | {:error, :out_of_bounds}
+  def put(%Canvas{} = canvas, {_, _} = point, character) do
+    if at(canvas, point) != nil do
+      {:ok, %{canvas | fields: %{canvas.fields | point => character}}}
+    else
+      {:error, :out_of_bounds}
+    end
   end
 end

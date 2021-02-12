@@ -11,7 +11,7 @@ defmodule Draw.Engine.Canvas.Operation.Point do
 
   defimpl Operation do
     def process(%Point{point: point, character: character}, %Canvas{fields: fields} = canvas) do
-      if Map.has_key?(fields, point) do
+      if Canvas.at(canvas, point) != nil do
         {:ok, %{canvas | fields: %{fields | point => character}}}
       else
         {:error, :out_of_bounds}
