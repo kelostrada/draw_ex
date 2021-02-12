@@ -10,7 +10,7 @@ defmodule Draw.Engine.Canvas.Operation.Point do
   alias Draw.Engine.Canvas.Operation.Point
 
   defimpl Operation do
-    def process(%Point{point: point, character: character}, %Canvas{fields: fields} = canvas) do
+    def process(%Point{point: point, character: <<character>>}, %Canvas{fields: fields} = canvas) do
       if Canvas.at(canvas, point) != nil do
         {:ok, %{canvas | fields: %{fields | point => character}}}
       else

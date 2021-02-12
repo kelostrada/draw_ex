@@ -10,13 +10,14 @@ defmodule Draw.Engine.CanvasTest do
     property "fields always contain all the keys and correct values" do
       check all width <- positive_integer(),
                 height <- positive_integer(),
-                character <- integer(0..255),
+                character <- string(:ascii, min_length: 1, max_length: 1),
+                <<char_code>> = character,
                 canvas = Canvas.new(width, height, character),
                 expected_fields = for(x <- 0..(width - 1), y <- 0..(height - 1), do: {x, y}) do
         assert width == canvas.width
         assert height == canvas.height
         assert MapSet.new(expected_fields) == canvas.fields |> Map.keys() |> MapSet.new()
-        assert Enum.all?(Map.values(canvas.fields), &(&1 == character))
+        assert Enum.all?(Map.values(canvas.fields), &(&1 == char_code))
       end
     end
   end
@@ -29,10 +30,10 @@ defmodule Draw.Engine.CanvasTest do
         fields: %{{0, 0} => 100, {0, 1} => 101, {1, 0} => 102, {1, 1} => 103}
       }
 
-      assert Canvas.at(canvas, {0, 0}) == 100
-      assert Canvas.at(canvas, {0, 1}) == 101
-      assert Canvas.at(canvas, {1, 0}) == 102
-      assert Canvas.at(canvas, {1, 1}) == 103
+      assert Canvas.at(canvas, {0, 0}) == "d"
+      assert Canvas.at(canvas, {0, 1}) == "e"
+      assert Canvas.at(canvas, {1, 0}) == "f"
+      assert Canvas.at(canvas, {1, 1}) == "g"
     end
 
     test "returns nil if the position is out of bounds" do
@@ -45,13 +46,13 @@ defmodule Draw.Engine.CanvasTest do
   describe "put/2" do
     test "puts a value on position" do
       canvas = Canvas.new()
-      assert {:ok, canvas} = Canvas.put(canvas, {0, 0}, 100)
-      assert Canvas.at(canvas, {0, 0}) == 100
+      assert {:ok, canvas} = Canvas.put(canvas, {0, 0}, "d")
+      assert Canvas.at(canvas, {0, 0}) == "d"
     end
 
     test "returns error if the point is out of bounds" do
       canvas = Canvas.new()
-      assert {:error, :out_of_bounds} = Canvas.put(canvas, {100, 100}, 100)
+      assert {:error, :out_of_bounds} = Canvas.put(canvas, {100, 100}, "d")
     end
   end
 end
