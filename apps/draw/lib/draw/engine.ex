@@ -13,7 +13,7 @@ defmodule Draw.Engine do
   @doc """
   Prepare a new canvas with given size.
   """
-  @spec new_canvas(size :: point()) :: Canvas.t()
+  @spec new_canvas(size :: point() | nil) :: Canvas.t()
   def new_canvas(size \\ nil)
 
   def new_canvas(nil) do
