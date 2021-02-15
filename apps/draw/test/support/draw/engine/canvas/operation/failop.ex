@@ -1,5 +1,7 @@
 defmodule Draw.Engine.Canvas.Operation.Failop do
+  @moduledoc false
   alias Draw.Engine.Canvas.Operation
+
   defstruct []
 
   defimpl Operation do

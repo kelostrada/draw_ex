@@ -1,4 +1,5 @@
 defmodule DrawWeb.PageLive do
+  @moduledoc false
   use DrawWeb, :live_view
 
   @impl true
