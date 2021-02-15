@@ -3,6 +3,7 @@ defmodule Draw.Engine.Canvas.Operation.PointTest do
   use ExUnitProperties
 
   alias Draw.Engine.Canvas
+  alias Draw.Engine.Canvas.Changes
   alias Draw.Engine.Canvas.Operation
   alias Draw.Engine.Canvas.Operation.Point
 
@@ -11,8 +12,8 @@ defmodule Draw.Engine.Canvas.Operation.PointTest do
       canvas = Canvas.new()
       point = %Point{point: {1, 2}, character: "A"}
 
-      assert {:ok, canvas} = Operation.process(point, canvas)
-      assert Canvas.at(canvas, {1, 2}) == "A"
+      assert {:ok, %Changes{fields: fields}} = Operation.process(point, canvas)
+      assert %{{1, 2} => 65} == fields
     end
 
     test "doesn't add point if out of bounds" do
@@ -28,14 +29,10 @@ defmodule Draw.Engine.Canvas.Operation.PointTest do
                 x <- integer(0..(width - 1)),
                 y <- integer(0..(height - 1)),
                 canvas = Canvas.new(width, height, " "),
-                point = %Point{point: {x, y}, character: character} do
-        assert {:ok, canvas} = Operation.process(point, canvas)
-
-        for i <- 0..(width - 1), j <- 0..(height - 1), i != x && j != y do
-          assert Canvas.at(canvas, {i, j}) == " "
-        end
-
-        assert Canvas.at(canvas, {x, y}) == character
+                point = %Point{point: {x, y}, character: character},
+                <<char_code>> = character do
+        assert {:ok, %Changes{fields: fields}} = Operation.process(point, canvas)
+        assert %{{x, y} => char_code} == fields
       end
     end
   end
