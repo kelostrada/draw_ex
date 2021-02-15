@@ -5,6 +5,7 @@ defmodule Draw.Engine.Canvas do
 
   alias Draw.Engine
   alias Draw.Engine.Canvas
+  alias Draw.Engine.Canvas.Changes
 
   @type t :: %Canvas{}
 
@@ -61,5 +62,19 @@ defmodule Draw.Engine.Canvas do
     else
       {:error, :out_of_bounds}
     end
+  end
+
+  @doc """
+  Apply changes to the Canvas fields. Will check if the changes go out of bounds and return
+  error tuple `{:error, :out_of_bounds}` in such a case.
+  """
+  @spec apply_changes(Canvas.t(), Changes.t()) :: {:ok, Canvas.t()} | {:error, :out_of_bounds}
+  def apply_changes(%Canvas{} = canvas, %Changes{} = changes) do
+    Enum.reduce_while(changes.fields, {:ok, canvas}, fn {point, character}, {:ok, canvas} ->
+      case put(canvas, point, <<character>>) do
+        {:ok, canvas} -> {:cont, {:ok, canvas}}
+        {:error, error} -> {:halt, {:error, error}}
+      end
+    end)
   end
 end

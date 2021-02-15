@@ -13,7 +13,7 @@ defmodule Draw.Engine do
   @doc """
   Prepare a new canvas with given size.
   """
-  @spec new_canvas(size :: point()) :: Canvas.t()
+  @spec new_canvas(size :: point() | nil) :: Canvas.t()
   def new_canvas(size \\ nil)
 
   def new_canvas(nil) do
@@ -31,10 +31,10 @@ defmodule Draw.Engine do
   For now it just modifies fields.
   """
   @spec apply_operation(Canvas.t(), Operation.t()) :: {:ok, Canvas.t()} | {:error, atom()}
-  def apply_operation(%Canvas{} = canvas, %{} = operation) do
+  def apply_operation(%Canvas{} = canvas, operation) do
     case Operation.process(operation, canvas) do
-      {:ok, canvas} ->
-        {:ok, canvas}
+      {:ok, changes} ->
+        Canvas.apply_changes(canvas, changes)
 
       {:error, error} ->
         Logger.error("Illegal operation #{inspect(operation)} #{inspect(error)}")

@@ -3,6 +3,7 @@ defmodule Draw.Engine.CanvasTest do
   use ExUnitProperties
 
   alias Draw.Engine.Canvas
+  alias Draw.Engine.Canvas.Changes
 
   doctest Draw.Engine.Canvas
 
@@ -43,7 +44,7 @@ defmodule Draw.Engine.CanvasTest do
     end
   end
 
-  describe "put/2" do
+  describe "put/3" do
     test "puts a value on position" do
       canvas = Canvas.new()
       assert {:ok, canvas} = Canvas.put(canvas, {0, 0}, "d")
@@ -53,6 +54,51 @@ defmodule Draw.Engine.CanvasTest do
     test "returns error if the point is out of bounds" do
       canvas = Canvas.new()
       assert {:error, :out_of_bounds} = Canvas.put(canvas, {100, 100}, "d")
+    end
+  end
+
+  describe "apply_changes/2" do
+    setup do
+      %{canvas: Canvas.new(5, 5, ".")}
+    end
+
+    test "applies no changes", %{canvas: canvas} do
+      assert {:ok, canvas} == Canvas.apply_changes(canvas, %Changes{})
+    end
+
+    test "applies one change", %{canvas: canvas} do
+      changes = %Changes{fields: %{{1, 1} => 65}}
+      assert {:ok, canvas} = Canvas.apply_changes(canvas, changes)
+
+      expected_canvas = """
+      .....
+      .A...
+      .....
+      .....
+      .....
+      """
+
+      assert expected_canvas == to_string(canvas)
+    end
+
+    test "applies multiple changes", %{canvas: canvas} do
+      changes = %Changes{fields: %{{1, 1} => 65, {2, 2} => 66, {3, 4} => 67}}
+      assert {:ok, canvas} = Canvas.apply_changes(canvas, changes)
+
+      expected_canvas = """
+      .....
+      .A...
+      ..B..
+      .....
+      ...C.
+      """
+
+      assert expected_canvas == to_string(canvas)
+    end
+
+    test "returns error if changes out of bounds", %{canvas: canvas} do
+      changes = %Changes{fields: %{{5, 5} => 65}}
+      assert {:error, :out_of_bounds} == Canvas.apply_changes(canvas, changes)
     end
   end
 end
