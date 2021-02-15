@@ -41,7 +41,7 @@ defmodule Draw.MixProject do
       {:ecto_sql, "~> 3.4"},
       {:postgrex, ">= 0.0.0"},
       {:jason, "~> 1.0"},
-      {:stream_data, "~> 0.5", only: :test}
+      {:stream_data, "~> 0.5", only: [:test, :dev]}
     ]
   end
 
