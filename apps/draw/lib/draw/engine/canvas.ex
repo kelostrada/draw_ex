@@ -18,6 +18,15 @@ defmodule Draw.Engine.Canvas do
     end
   end
 
+  defimpl Inspect do
+    def inspect(%Canvas{} = canvas, _opts) do
+      "#Canvas<#{canvas.width}x#{canvas.height}>\n" <>
+        "#{String.duplicate("=", canvas.width)}\n" <>
+        "#{canvas}" <>
+        "#{String.duplicate("=", canvas.width)}\n"
+    end
+  end
+
   @doc """
   Creates new Canvas structure. Prefills the canvas with a given character
 
