@@ -18,7 +18,7 @@ defmodule Draw.Engine.Canvas.Loader do
   """
   @spec load(integer(), integer(), String.t()) :: {:ok, Canvas.t()} | {:error, :wrong_format}
   def load(width, height, fields) do
-    rows = fields |> String.split("\n") |> Enum.filter(& &1 != "")
+    rows = fields |> String.split("\n") |> Enum.filter(&(&1 != ""))
 
     cond do
       length(rows) != height ->

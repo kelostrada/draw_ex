@@ -2,6 +2,8 @@ defmodule Draw.Engine.CanvasTest do
   use ExUnit.Case
   use ExUnitProperties
 
+  import ExUnit.CaptureIO
+
   alias Draw.Engine.Canvas
   alias Draw.Engine.Canvas.Changes
 
@@ -99,6 +101,25 @@ defmodule Draw.Engine.CanvasTest do
     test "returns error if changes out of bounds", %{canvas: canvas} do
       changes = %Changes{fields: %{{5, 5} => 65}}
       assert {:error, :out_of_bounds} == Canvas.apply_changes(canvas, changes)
+    end
+  end
+
+  describe "Inspect protocol" do
+    test "inspects canvas in human readable format" do
+      canvas = Canvas.new(6, 5, "X")
+
+      assert capture_io(fn ->
+               IO.inspect(canvas)
+             end) == """
+             #Canvas<6x5>
+             ======
+             XXXXXX
+             XXXXXX
+             XXXXXX
+             XXXXXX
+             XXXXXX
+             ======\n
+             """
     end
   end
 end
