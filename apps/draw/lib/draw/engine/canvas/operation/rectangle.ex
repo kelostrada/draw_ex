@@ -20,6 +20,7 @@ defmodule Draw.Engine.Canvas.Operation.Rectangle do
   @typep character_type :: {:fill, Engine.ascii()} | {:outline, Engine.ascii()}
   @type opts :: [character_type()]
 
+  @enforce_keys [:point, :width, :height, :fill, :outline]
   defstruct [:point, :width, :height, :fill, :outline]
 
   @doc """

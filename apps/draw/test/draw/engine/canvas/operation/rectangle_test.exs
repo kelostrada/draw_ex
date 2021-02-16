@@ -23,16 +23,14 @@ defmodule Draw.Engine.Canvas.Operation.RectangleTest do
   """
 
   @fixture2 """
-                .......  \s
-                .......  \s
-                .......  \s
-  OOOOOOOO      .......  \s
-  O      O      .......  \s
-  O    XXXXX    .......  \s
-  OOOOOXXXXX             \s
-       XXXXX             \s
-                         \s
-                         \s
+                .......
+                .......
+                .......
+  OOOOOOOO      .......
+  O      O      .......
+  O    XXXXX    .......
+  OOOOOXXXXX          \s
+       XXXXX          \s
   """
 
   describe "known fixtures" do
@@ -49,7 +47,7 @@ defmodule Draw.Engine.Canvas.Operation.RectangleTest do
     end
 
     test "fixture 2" do
-      canvas = Canvas.new(24, 10)
+      canvas = Canvas.new(21, 8)
       rectangle = Rectangle.new({14, 0}, 7, 6, fill: ".")
       assert {:ok, changes} = Operation.process(rectangle, canvas)
       assert {:ok, canvas} = Canvas.apply_changes(canvas, changes)
