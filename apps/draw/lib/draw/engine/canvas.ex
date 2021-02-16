@@ -38,7 +38,7 @@ defmodule Draw.Engine.Canvas do
   iex> Canvas.new(2, 3) |> Map.get(:fields) |> Map.keys()
   [{0, 0}, {0, 1}, {0, 2}, {1, 0}, {1, 1}, {1, 2}]
   """
-  @spec new(width :: integer(), height :: integer(), fill_character :: String.t()) :: t()
+  @spec new(width :: integer(), height :: integer(), fill_character :: Engine.ascii()) :: t()
   def new(width \\ 32, height \\ 12, <<fill>> = _fill_character \\ " ")
       when width > 0 and height > 0 do
     fields =
