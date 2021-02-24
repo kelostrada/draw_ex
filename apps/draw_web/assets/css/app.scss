@@ -89,3 +89,14 @@
   display: block;
   margin: -1rem 0 2rem;
 }
+.fields {
+  background-color: azure;
+  margin: 10px;
+  
+  .column {
+    height: 1.2em;
+    padding: 0;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: small;
+  }
+}
