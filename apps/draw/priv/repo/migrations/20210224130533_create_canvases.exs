@@ -10,6 +10,5 @@ defmodule Draw.Repo.Migrations.CreateCanvases do
 
       timestamps()
     end
-
   end
 end

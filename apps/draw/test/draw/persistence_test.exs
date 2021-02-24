@@ -40,6 +40,20 @@ defmodule Draw.PersistenceTest do
       assert {:error, %Ecto.Changeset{}} = Persistence.create_canvas(@invalid_attrs)
     end
 
+    test "create_canvas/1 with no positive size returns error changeset" do
+      assert {:error, changeset} =
+               Persistence.create_canvas(%{fields: "aaa", width: 0, height: 0})
+
+      assert [
+               height:
+                 {"must be greater than %{number}",
+                  [validation: :number, kind: :greater_than, number: 0]},
+               width:
+                 {"must be greater than %{number}",
+                  [validation: :number, kind: :greater_than, number: 0]}
+             ] == changeset.errors
+    end
+
     test "update_canvas/2 with valid data updates the canvas" do
       canvas = canvas_fixture()
       assert {:ok, %Canvas{} = canvas} = Persistence.update_canvas(canvas, @update_attrs)
