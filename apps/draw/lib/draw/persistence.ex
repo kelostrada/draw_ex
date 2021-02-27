@@ -24,6 +24,20 @@ defmodule Draw.Persistence do
   @doc """
   Gets a single canvas.
 
+  ## Examples
+
+      iex> get_canvas(123)
+      %Canvas{}
+
+      iex> get_canvas(456)
+      nil
+
+  """
+  def get_canvas(id), do: Repo.get(Canvas, id)
+
+  @doc """
+  Gets a single canvas.
+
   Raises `Ecto.NoResultsError` if the Canvas does not exist.
 
   ## Examples

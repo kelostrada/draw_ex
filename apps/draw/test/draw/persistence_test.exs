@@ -24,6 +24,11 @@ defmodule Draw.PersistenceTest do
       assert Persistence.list_canvases() == [canvas]
     end
 
+    test "get_canvas/1 returns the canvas with given id" do
+      canvas = canvas_fixture()
+      assert Persistence.get_canvas(canvas.id) == canvas
+    end
+
     test "get_canvas!/1 returns the canvas with given id" do
       canvas = canvas_fixture()
       assert Persistence.get_canvas!(canvas.id) == canvas
