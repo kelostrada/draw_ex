@@ -3,6 +3,7 @@ defmodule Draw.Engine do
   Canvas Engine - uses Operations to work on Canvas
   """
   alias Draw.Engine.Canvas
+  alias Draw.Engine.Canvas.Loader
   alias Draw.Engine.Canvas.Operation
 
   require Logger
@@ -22,6 +23,15 @@ defmodule Draw.Engine do
 
   def new_canvas({width, height}) do
     Canvas.new(width, height)
+  end
+
+  @doc """
+  Load canvas from its string represation
+  """
+  @spec load_canvas(size :: point(), fields :: String.t()) ::
+          {:ok, Canvas.t()} | {:error, :wrong_format}
+  def load_canvas({width, height}, fields) when is_binary(fields) do
+    Loader.load(width, height, fields)
   end
 
   @doc """

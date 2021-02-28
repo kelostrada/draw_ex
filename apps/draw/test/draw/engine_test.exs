@@ -17,6 +17,14 @@ defmodule Draw.EngineTest do
     end
   end
 
+  describe "load_canvas/2" do
+    test "loads canvas from string" do
+      canvas_string = "AB\nCD\n"
+      assert {:ok, canvas} = Engine.load_canvas({2, 2}, canvas_string)
+      assert to_string(canvas) == "AB\nCD\n"
+    end
+  end
+
   describe "apply_operation/2" do
     test "apply noop operation to the canvas (make no change)" do
       canvas = Canvas.new()
