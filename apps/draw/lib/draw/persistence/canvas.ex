@@ -16,7 +16,7 @@ defmodule Draw.Persistence.Canvas do
   def changeset(canvas, attrs) do
     canvas
     |> cast(attrs, [:width, :height, :fields])
-    |> validate_required([:width, :height, :fields])
+    |> validate_required([:width, :height, :fields], trim: false)
     |> validate_number(:width, greater_than: 0)
     |> validate_number(:height, greater_than: 0)
   end
