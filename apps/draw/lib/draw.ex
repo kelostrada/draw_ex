@@ -14,10 +14,10 @@ defmodule Draw do
   Initialize canvas. Creates canvas in database, or loads it from database if
   the UUID is provided. Will start up a genserver that holds the canvas data in memory.
   """
-  @spec init_canvas(id :: Ecto.UUID.t() | nil) ::
-          {:ok, {pid(), Ecto.UUID.t(), Engine.Canvas.t()}}
+  @spec init_canvas(canvas_id :: Ecto.UUID.t() | nil) ::
+          {:ok, canvas_id :: Ecto.UUID.t()}
           | {:error, error()}
-  def init_canvas(id \\ nil)
+  def init_canvas(canvas_id \\ nil)
 
   def init_canvas(nil) do
     case Persistence.create_empty_canvas() do
@@ -29,9 +29,9 @@ defmodule Draw do
     end
   end
 
-  def init_canvas(id) do
-    case ServerSupervisor.start_draw_server(id) do
-      {:ok, _pid} -> {:ok, id}
+  def init_canvas(canvas_id) do
+    case ServerSupervisor.start_draw_server(canvas_id) do
+      {:ok, _pid} -> {:ok, canvas_id}
       {:error, error} -> {:error, error}
     end
   end
