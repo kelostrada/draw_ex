@@ -7,9 +7,9 @@ defmodule DrawWeb.PageLive do
 
   @impl true
   def mount(params, _session, socket) do
-    canvas_id = Map.get(params, "canvas_id", Ecto.UUID.generate())
+    canvas_id = Map.get(params, "canvas_id")
     PubSub.subscribe(Draw.PubSub, "canvas:#{canvas_id}")
-    Draw.ServerSupervisor.start_draw_server(canvas_id)
+    {:ok, canvas_id} = Draw.init_canvas(canvas_id)
     canvas = Draw.Server.get_canvas(canvas_id)
     {:ok, socket |> assign(canvas: canvas) |> assign(canvas_id: canvas_id)}
   end
