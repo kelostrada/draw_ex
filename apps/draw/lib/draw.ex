@@ -40,8 +40,7 @@ defmodule Draw do
   def init_canvas(id) do
     with {:get_canvas, %Persistence.Canvas{} = db_canvas} <-
            {:get_canvas, Persistence.get_canvas(id)},
-         {:ok, canvas} <-
-           Engine.load_canvas({db_canvas.width, db_canvas.height}, db_canvas.fields) do
+         {:ok, canvas} <- Engine.load_canvas(db_canvas) do
       {:ok, {self(), db_canvas.id, canvas}}
     else
       {:get_canvas, nil} -> {:error, :not_found}
