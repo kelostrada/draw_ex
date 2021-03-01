@@ -4,7 +4,6 @@ defmodule Draw do
   using different operations (like rectangle or flood fill).
   """
 
-  alias Draw.Engine
   alias Draw.Persistence
   alias Draw.ServerSupervisor
 

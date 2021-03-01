@@ -6,7 +6,9 @@ defmodule Draw.Server do
   use GenServer
 
   alias Draw.Engine
+  alias Draw.Engine.Canvas.Operation.FloodFill
   alias Draw.Engine.Canvas.Operation.Point
+  alias Draw.Engine.Canvas.Operation.Rectangle
   alias Draw.Persistence
   alias Phoenix.PubSub
 
@@ -55,6 +57,18 @@ defmodule Draw.Server do
     canvas_id |> server_name() |> GenServer.call({:draw_point, point, character})
   end
 
+  def draw_rectangle(canvas_id, point, width, height, fill, outline) do
+    canvas_id
+    |> server_name()
+    |> GenServer.call({:draw_rectangle, point, width, height, fill, outline})
+  end
+
+  def flood_fill(canvas_id, point, fill) do
+    canvas_id
+    |> server_name()
+    |> GenServer.call({:flood_fill, point, fill})
+  end
+
   @impl true
   def handle_call(:get_canvas, _from, state) do
     {:reply, state.canvas, state}
@@ -63,14 +77,44 @@ defmodule Draw.Server do
   @impl true
   def handle_call({:draw_point, point, character}, _from, state) do
     point = %Point{point: point, character: character}
+    apply_operation(state, point)
+  end
 
-    case Engine.apply_operation(state.canvas, point) do
+  @impl true
+  def handle_call({:draw_rectangle, point, width, height, fill, outline}, _from, state) do
+    rectangle = Rectangle.new(point, width, height, fill: fill, outline: outline)
+    apply_operation(state, rectangle)
+  end
+
+  @impl true
+  def handle_call({:flood_fill, point, fill}, _from, state) do
+    flood_fill = FloodFill.new(point, fill)
+    apply_operation(state, flood_fill)
+  end
+
+  defp apply_operation(state, operation) do
+    case Engine.apply_operation(state.canvas, operation) do
       {:ok, canvas} ->
-        PubSub.broadcast(Draw.PubSub, "canvas:#{state.canvas_id}", {:canvas_update, canvas})
-        {:reply, {:ok, canvas}, %{state | canvas: canvas}}
+        broadcast_canvas(state.canvas_id, canvas)
+        {:reply, {:ok, canvas}, persist_canvas(%{state | canvas: canvas})}
 
       {:error, error} ->
         {:reply, {:error, error}, state}
     end
+  end
+
+  def persist_canvas(state) do
+    canvas = %Persistence.Canvas{id: state.canvas_id}
+
+    attrs = %{
+      width: state.canvas.width,
+      height: state.canvas.height,
+      fields: to_string(state.canvas)
+    }
+
+    # Raise if update fails for some reason
+    {:ok, _} = Persistence.update_canvas(canvas, attrs)
+
+    state
   end
 end
