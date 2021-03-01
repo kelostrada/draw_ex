@@ -9,7 +9,8 @@ defmodule Draw.Umbrella.MixProject do
       deps: deps(),
       aliases: aliases(),
       test_coverage: [tool: ExCoveralls],
-      preferred_cli_env: [coveralls: :test, "coveralls.github": :test]
+      preferred_cli_env: [coveralls: :test, "coveralls.github": :test],
+      dialyzer: dialyzer()
     ]
   end
 
@@ -46,6 +47,13 @@ defmodule Draw.Umbrella.MixProject do
     [
       # run `mix setup` in all child apps
       setup: ["cmd mix setup"]
+    ]
+  end
+
+  defp dialyzer do
+    [
+      plt_core_path: "priv/plts",
+      plt_file: {:no_warn, "priv/plts/dialyzer.plt"}
     ]
   end
 end
