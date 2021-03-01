@@ -79,7 +79,7 @@ defmodule Draw.Engine.Canvas.Operation.FloodFill do
           Canvas.t(),
           Engine.ascii()
         ) ::
-          MapSet.t(Engine.point())
+          {MapSet.t(Engine.point()), MapSet.t(Engine.point())}
   defp flood_fill(points, visited, {x, y} = point, canvas, starting_color) do
     current_color = Canvas.at(canvas, point)
 
