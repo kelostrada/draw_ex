@@ -76,6 +76,8 @@ jobs:
       run: |
         mkdir -p priv/plts
         mix dialyzer --plt
+      env:
+        MIX_ENV: "dev"
 
     - name: Run dialyzer
       run: mix dialyzer
