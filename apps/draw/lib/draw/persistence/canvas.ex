@@ -1,4 +1,7 @@
 defmodule Draw.Persistence.Canvas do
+  @moduledoc """
+  Canvas database schema
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

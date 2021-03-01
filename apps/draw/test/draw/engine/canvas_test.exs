@@ -109,6 +109,7 @@ defmodule Draw.Engine.CanvasTest do
       canvas = Canvas.new(6, 5, "X")
 
       assert capture_io(fn ->
+               # credo:disable-for-next-line
                IO.inspect(canvas)
              end) == """
              #Canvas<6x5>
