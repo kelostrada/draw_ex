@@ -39,7 +39,7 @@ defmodule Draw.Engine.Canvas do
   [{0, 0}, {0, 1}, {0, 2}, {1, 0}, {1, 1}, {1, 2}]
   """
   @spec new(width :: integer(), height :: integer(), fill_character :: Engine.ascii()) :: t()
-  def new(width \\ 32, height \\ 12, <<fill>> = _fill_character \\ " ")
+  def new(width \\ 32, height \\ 20, <<fill>> = _fill_character \\ " ")
       when width > 0 and height > 0 do
     fields =
       for x <- 0..(width - 1), y <- 0..(height - 1), into: %{} do

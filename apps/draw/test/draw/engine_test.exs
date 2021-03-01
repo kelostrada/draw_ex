@@ -13,7 +13,7 @@ defmodule Draw.EngineTest do
     end
 
     test "creates a new canvas with default size" do
-      assert Engine.new_canvas() == Canvas.new(32, 12, " ")
+      assert Engine.new_canvas() == Canvas.new(32, 20, " ")
     end
   end
 
