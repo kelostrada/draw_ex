@@ -4,8 +4,8 @@ defmodule Draw do
   using different operations (like rectangle or flood fill).
   """
 
-  alias Draw.Engine
   alias Draw.Persistence
+  alias Draw.ServerSupervisor
 
   @type error :: :not_found | :wrong_format
 
@@ -13,38 +13,24 @@ defmodule Draw do
   Initialize canvas. Creates canvas in database, or loads it from database if
   the UUID is provided. Will start up a genserver that holds the canvas data in memory.
   """
-  @spec init_canvas(id :: Ecto.UUID.t() | nil) ::
-          {:ok, {pid(), Ecto.UUID.t(), Engine.Canvas.t()}}
-          | {:error, Ecto.Changeset.t()}
+  @spec init_canvas(canvas_id :: Ecto.UUID.t() | nil) ::
+          {:ok, canvas_id :: Ecto.UUID.t()}
           | {:error, error()}
-  def init_canvas(id \\ nil)
+  def init_canvas(canvas_id \\ nil)
 
   def init_canvas(nil) do
-    canvas = Engine.new_canvas()
-
-    attrs = %{
-      width: canvas.width,
-      height: canvas.height,
-      fields: to_string(canvas)
-    }
-
-    case Persistence.create_canvas(attrs) do
+    case Persistence.create_empty_canvas() do
       {:ok, db_canvas} ->
-        {:ok, {self(), db_canvas.id, canvas}}
+        init_canvas(db_canvas.id)
 
       {:error, error} ->
         {:error, error}
     end
   end
 
-  def init_canvas(id) do
-    with {:get_canvas, %Persistence.Canvas{} = db_canvas} <-
-           {:get_canvas, Persistence.get_canvas(id)},
-         {:ok, canvas} <-
-           Engine.load_canvas({db_canvas.width, db_canvas.height}, db_canvas.fields) do
-      {:ok, {self(), db_canvas.id, canvas}}
-    else
-      {:get_canvas, nil} -> {:error, :not_found}
+  def init_canvas(canvas_id) do
+    case ServerSupervisor.start_draw_server(canvas_id) do
+      {:ok, _pid} -> {:ok, canvas_id}
       {:error, error} -> {:error, error}
     end
   end

@@ -5,19 +5,17 @@ defmodule DrawTest do
 
   describe "init_canvas/1" do
     test "initializes a new canvas" do
-      assert {:ok, {_pid, id, canvas}} = Draw.init_canvas()
-
-      db_canvas = Persistence.get_canvas!(id)
-      assert db_canvas.fields == to_string(canvas)
+      assert {:ok, id} = Draw.init_canvas()
+      assert Persistence.get_canvas!(id)
     end
 
     test "initializes and loads canvas from database" do
       assert {:ok, db_canvas} =
                Persistence.create_canvas(%{width: 2, height: 2, fields: "AB\nCD\n"})
 
-      assert {:ok, {_pid, id, canvas}} = Draw.init_canvas(db_canvas.id)
+      assert {:ok, id} = Draw.init_canvas(db_canvas.id)
       assert id == db_canvas.id
-      assert "AB\nCD\n" == to_string(canvas)
+      assert "AB\nCD\n" == db_canvas.fields
     end
 
     test "fails to initialize canvas because ID doesn't exist" do

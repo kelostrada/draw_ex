@@ -10,9 +10,9 @@ defmodule Draw.Application do
       # Start the Ecto repository
       Draw.Repo,
       # Start the PubSub system
-      {Phoenix.PubSub, name: Draw.PubSub}
+      {Phoenix.PubSub, name: Draw.PubSub},
       # Start a worker by calling: Draw.Worker.start_link(arg)
-      # {Draw.Worker, arg}
+      Draw.ServerSupervisor
     ]
 
     Supervisor.start_link(children, strategy: :one_for_one, name: Draw.Supervisor)

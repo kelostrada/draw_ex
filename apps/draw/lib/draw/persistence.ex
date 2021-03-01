@@ -70,6 +70,29 @@ defmodule Draw.Persistence do
   end
 
   @doc """
+  Creates an empty canvas based on its Engine representation with default values.
+
+  ## Examples
+
+      iex> create_empty_canvas()
+      {:ok, %Canvas{}}
+
+      iex> create_empty_canvas({2, 3})
+      {:ok, %Canvas{width: 2, height: 3}}
+  """
+  def create_empty_canvas(size \\ nil) do
+    canvas = Draw.Engine.new_canvas(size)
+
+    attrs = %{
+      width: canvas.width,
+      height: canvas.height,
+      fields: to_string(canvas)
+    }
+
+    create_canvas(attrs)
+  end
+
+  @doc """
   Updates a canvas.
 
   ## Examples

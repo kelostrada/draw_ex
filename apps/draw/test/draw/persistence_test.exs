@@ -59,6 +59,13 @@ defmodule Draw.PersistenceTest do
              ] == changeset.errors
     end
 
+    test "create_empty_canvas/1 with valid size" do
+      assert {:ok, %Canvas{} = canvas} = Persistence.create_empty_canvas({2, 3})
+      assert canvas.fields == "  \n  \n  \n"
+      assert canvas.height == 3
+      assert canvas.width == 2
+    end
+
     test "update_canvas/2 with valid data updates the canvas" do
       canvas = canvas_fixture()
       assert {:ok, %Canvas{} = canvas} = Persistence.update_canvas(canvas, @update_attrs)

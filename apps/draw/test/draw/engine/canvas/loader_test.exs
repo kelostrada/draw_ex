@@ -10,7 +10,7 @@ defmodule Draw.Engine.Canvas.LoaderTest do
     test "load 1x1 canvas" do
       canvas_string = "A"
       assert {:ok, canvas} = Loader.load(1, 1, canvas_string)
-      assert %Canvas{width: 1, height: 1, fields: %{{0, 0} => 65}}
+      assert %Canvas{width: 1, height: 1, fields: %{{0, 0} => 65}} == canvas
     end
 
     test "load 2x2 canvas" do
@@ -18,10 +18,10 @@ defmodule Draw.Engine.Canvas.LoaderTest do
       assert {:ok, canvas} = Loader.load(2, 2, canvas_string)
 
       assert %Canvas{
-        width: 2,
-        height: 2,
-        fields: %{{0, 0} => 65, {1, 0} => 66, {0, 1} => 67, {1, 1} => 68}
-      }
+               width: 2,
+               height: 2,
+               fields: %{{0, 0} => 65, {1, 0} => 66, {0, 1} => 67, {1, 1} => 68}
+             } == canvas
     end
 
     property "to_string/1 matches load/3" do

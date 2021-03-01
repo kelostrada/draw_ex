@@ -17,10 +17,10 @@ defmodule Draw.EngineTest do
     end
   end
 
-  describe "load_canvas/2" do
-    test "loads canvas from string" do
-      canvas_string = "AB\nCD\n"
-      assert {:ok, canvas} = Engine.load_canvas({2, 2}, canvas_string)
+  describe "load_canvas/1" do
+    test "loads canvas from database schema" do
+      db_canvas = %Draw.Persistence.Canvas{width: 2, height: 2, fields: "AB\nCD\n"}
+      assert {:ok, canvas} = Engine.load_canvas(db_canvas)
       assert to_string(canvas) == "AB\nCD\n"
     end
   end
