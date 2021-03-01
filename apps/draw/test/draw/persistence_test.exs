@@ -49,14 +49,8 @@ defmodule Draw.PersistenceTest do
       assert {:error, changeset} =
                Persistence.create_canvas(%{fields: "aaa", width: 0, height: 0})
 
-      assert [
-               height:
-                 {"must be greater than %{number}",
-                  [validation: :number, kind: :greater_than, number: 0]},
-               width:
-                 {"must be greater than %{number}",
-                  [validation: :number, kind: :greater_than, number: 0]}
-             ] == changeset.errors
+      assert "must be greater than 0" in errors_on(changeset).height
+      assert "must be greater than 0" in errors_on(changeset).width
     end
 
     test "create_empty_canvas/1 with valid size" do
