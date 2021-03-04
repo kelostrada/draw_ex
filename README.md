@@ -3,3 +3,20 @@
 # DrawEx
 
 Draw with ASCII characters using Phoenix LiveView
+
+# How to run locally
+
+## Requirements
+
+* Default Postgres installation
+
+## Steps 
+
+```
+$ mix deps.get
+$ mix ecto.setup
+$ (cd apps/draw_web/assets && npm install)
+$ mix phx.server
+```
+
+Next you can visit [`localhost:4000`](http://localhost:4000) and start playing with the canvas.
