@@ -1,11 +1,12 @@
+<h2>Canvas <%= @canvas_id %></h2>
+
 <section class="row">
   <article class="column">
-    <h2>Canvas <%= @canvas_id %></h2>
     <div class="container fields">
       <%= for j <- 0..@canvas.height do %>
         <div class="row">
           <%= for i <- 0..@canvas.width do %>
-            <div class="field column" phx-click="draw_point" phx-value-x="<%= i %>" phx-value-y="<%= j %>">
+            <div class="field column" phx-click="operation" phx-value-x="<%= i %>" phx-value-y="<%= j %>">
               <%= Canvas.at(@canvas, {i, j}) %>
             </div>
           <% end %>
@@ -15,16 +16,33 @@
   </article>
   <article class="column">
     <h2>Options</h2>
-    <form phx-change="set_options">
+
+    <%= f = form_for @form, "#", [phx_change: :set_options] %>
       <fieldset>
-        <label for="charField">Character</label>
-        <input type="text" id="charField" name="character">
-        <label for="operationType">Operation type</label>
-        <select id="operationType" name="type">
-          <option value="point">Point</option>
-          <option value="rectangle">Rectangle</option>
-          <option value="flood_fill">FloodFill</option>
-        </select>
+        <%= radio_button f, :type, "point" %>
+        <%= label f, :type_point, "Point", class: "label-inline" %>
+        <%= radio_button f, :type, "rectangle" %>
+        <%= label f, :type_rectangle, "Rectangle", class: "label-inline" %>
+        <%= radio_button f, :type, "flood_fill" %>
+        <%= label f, :type_flood_fill, "Flood Fill", class: "label-inline" %>
+
+        <%= label f, :fill %>
+        <%= text_input f, :fill %>
+        <%= error_tag f, :fill %>
+
+        <div class="<%= if input_value(f, :type) != :rectangle, do: "hidden" %>">
+          <%= label f, :outline %>
+          <%= text_input f, :outline %>
+          <%= error_tag f, :outline %>
+
+          <%= label f, :width %>
+          <%= number_input f, :width %>
+          <%= error_tag f, :width %>
+
+          <%= label f, :height %>
+          <%= number_input f, :height %>
+          <%= error_tag f, :height %>
+        </div>
       </fieldset>
     </form>
   </article>

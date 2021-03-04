@@ -2,12 +2,6 @@
 @import "./phoenix.css";
 @import "../node_modules/nprogress/nprogress.css";
 
-/* LiveView specific classes for your customizations */
-.phx-no-feedback.invalid-feedback,
-.phx-no-feedback .invalid-feedback {
-  display: none;
-}
-
 .phx-click-loading {
   opacity: 0.5;
   transition: opacity 1s ease-out;
@@ -89,6 +83,10 @@
   display: block;
   margin: -1rem 0 2rem;
 }
+.hidden {
+  display: none;
+}
+
 .fields {
   background-color: azure;
   margin: 10px;
