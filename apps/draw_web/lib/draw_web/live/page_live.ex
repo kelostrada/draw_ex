@@ -100,7 +100,6 @@ defmodule DrawWeb.PageLive do
     {:noreply, assign(socket, form: form)}
   end
 
-  @impl true
   def handle_event("operation", %{"x" => x, "y" => y}, socket) do
     {x, _} = Integer.parse(x)
     {y, _} = Integer.parse(y)

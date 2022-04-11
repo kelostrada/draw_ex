@@ -1,12 +1,14 @@
 <h2>Canvas <%= @canvas_id %></h2>
 
+<button phx-click="inc_temperature">+</button>
+
 <section class="row">
   <article class="column">
     <div class="container fields">
       <%= for j <- 0..@canvas.height do %>
         <div class="row">
           <%= for i <- 0..@canvas.width do %>
-            <div class="field column" phx-click="operation" phx-value-x="<%= i %>" phx-value-y="<%= j %>">
+            <div class="field column" phx-click="operation" phx-value-x={i} phx-value-y={j}>
               <%= Canvas.at(@canvas, {i, j}) %>
             </div>
           <% end %>
@@ -17,7 +19,7 @@
   <article class="column">
     <h2>Options</h2>
 
-    <%= f = form_for @form, "#", [phx_change: :set_options] %>
+    <%= form_for @form, "#", [phx_change: :set_options], fn f -> %>
       <fieldset>
         <%= radio_button f, :type, "point" %>
         <%= label f, :type_point, "Point", class: "label-inline" %>
@@ -30,7 +32,7 @@
         <%= text_input f, :fill %>
         <%= error_tag f, :fill %>
 
-        <div class="<%= if input_value(f, :type) != :rectangle, do: "hidden" %>">
+        <div class={if input_value(f, :type) != :rectangle, do: "hidden"}>
           <%= label f, :outline %>
           <%= text_input f, :outline %>
           <%= error_tag f, :outline %>
@@ -44,6 +46,6 @@
           <%= error_tag f, :height %>
         </div>
       </fieldset>
-    </form>
+    <% end %>
   </article>
 </section>
