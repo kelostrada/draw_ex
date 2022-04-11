@@ -60,7 +60,7 @@ defmodule DrawWeb.MixProject do
     [
       setup: ["deps.get", "assets"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
-      assets: ["esbuild default"], 
+      assets: ["esbuild default"],
       "assets.deploy": ["esbuild default --minify", "phx.digest"]
     ]
   end
