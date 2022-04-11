@@ -41,15 +41,15 @@ defmodule DrawWeb.MixProject do
       {:phoenix, "~> 1.6.0"},
       {:phoenix_ecto, "~> 4.4"},
       {:phoenix_live_view, "~> 0.17.9"},
-      {:floki, ">= 0.27.0", only: :test},
+      {:floki, ">= 0.32.0", only: :test},
       {:phoenix_html, "~> 3.0"},
-      {:phoenix_live_reload, "~> 1.2", only: :dev},
+      {:phoenix_live_reload, "~> 1.3", only: :dev},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 0.5"},
       {:draw, in_umbrella: true},
-      {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"},
-      {:esbuild, "~> 0.2", runtime: Mix.env() == :dev}
+      {:jason, "~> 1.3"},
+      {:plug_cowboy, "~> 2.5"},
+      {:esbuild, "~> 0.4", runtime: Mix.env() == :dev}
     ]
   end
 
@@ -58,8 +58,9 @@ defmodule DrawWeb.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      setup: ["deps.get", "cmd npm install --prefix assets"],
-      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"]
+      setup: ["deps.get", "assets.deploy"],
+      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
+      "assets.deploy": ["esbuild default --minify", "phx.digest"]
     ]
   end
 end

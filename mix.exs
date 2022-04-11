@@ -28,9 +28,9 @@ defmodule Draw.Umbrella.MixProject do
   # and cannot be accessed from applications inside the apps/ folder.
   defp deps do
     [
-      {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.0"},
-      {:excoveralls, "~> 0.13", only: [:test]}
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.1"},
+      {:excoveralls, "~> 0.14", only: [:test]}
     ]
   end
 
