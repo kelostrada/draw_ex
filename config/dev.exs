@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 # Configure your database
 config :draw, Draw.Repo,
@@ -21,13 +21,7 @@ config :draw_web, DrawWeb.Endpoint,
   code_reloader: true,
   check_origin: false,
   watchers: [
-    node: [
-      "node_modules/webpack/bin/webpack.js",
-      "--mode",
-      "development",
-      "--watch-stdin",
-      cd: Path.expand("../apps/draw_web/assets", __DIR__)
-    ]
+    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
   ]
 
 # ## SSL Support
