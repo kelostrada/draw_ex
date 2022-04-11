@@ -58,8 +58,9 @@ defmodule DrawWeb.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      setup: ["deps.get", "assets.deploy"],
+      setup: ["deps.get", "assets"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
+      assets: ["esbuild default"], 
       "assets.deploy": ["esbuild default --minify", "phx.digest"]
     ]
   end

@@ -14,8 +14,7 @@ Draw with ASCII characters using Phoenix LiveView
 
 ```
 $ mix deps.get
-$ mix ecto.setup
-$ (cd apps/draw_web/assets && npm install)
+$ mix setup
 $ mix phx.server
 ```
 
